@@ -1,11 +1,11 @@
 import { ComponentProps } from "react";
 import { cn } from "@client/utils";
 
-interface ButtonProps extends ComponentProps<"button"> {
+interface Props extends ComponentProps<"button"> {
   text: string;
 }
 
-const Button = ({ className, text, ...props }: ButtonProps) => {
+const Button = ({ className, text, ...props }: Props) => {
   return (
     <button
       className={cn(

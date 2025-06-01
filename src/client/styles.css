@@ -6,6 +6,7 @@
   --color-primary: #005799;
   --color-accent: #DAECE2;
   --color-dark: #333333;
+  --color-gray: #959595;
   --color-error: #AD1E24;
 }
 
@@ -13,10 +14,10 @@ html {
   @apply font-body;
 }
 
-h1, h2, h3 {
-  @apply text-dark font-medium;
+h1, h2, legend {
+  @apply text-dark font-extrabold;
 }
 
-p {
+p, li, label, span {
   @apply text-dark;
 }

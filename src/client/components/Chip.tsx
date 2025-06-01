@@ -1,18 +1,18 @@
 import { X } from "lucide-react";
 import { cn } from "@client/utils";
 
-interface ChipProps {
+interface Props {
   label: string;
   onDelete?: () => void;
   className?: string;
 }
 
-const Chip = ({ label, onDelete, className = "" }: ChipProps) => {
+const Chip = ({ label, onDelete, className }: Props) => {
   return (
     <div
       role="listitem"
       className={cn(
-        "inline-flex items-center gap-2 px-3 py-1.5 bg-accent rounded-full text-sm group",
+        "inline-flex items-center gap-2 px-3 py-1.5 bg-accent rounded-md text-sm group",
         className
       )}
     >

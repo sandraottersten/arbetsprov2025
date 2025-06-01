@@ -3,7 +3,7 @@ import { cn } from "@client/utils";
 import { UseFormRegister } from "react-hook-form";
 import { FormData } from "@client/types/form";
 
-type InputProps = {
+type Props = {
   type: "text" | "email";
   id: string;
   name: keyof FormData;
@@ -11,7 +11,7 @@ type InputProps = {
   className?: string;
 };
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, Props>(
   ({ className, type, id, name, register }, ref) => {
     const { ref: inputRef, ...registerProps } = register(name);
 
@@ -21,7 +21,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         type={type}
         id={id}
         className={cn(
-          "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input flex h-12 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-gray flex h-12 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base transition-[color] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           "focus-visible:border-primary focus-visible:ring-primary focus-visible:ring-[2px]",
           "aria-invalid:ring-error aria-invalid:border-error",
           className

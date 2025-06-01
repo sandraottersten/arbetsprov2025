@@ -1,18 +1,18 @@
 import { useRef, useState, useCallback, KeyboardEvent } from "react";
 import { ChevronDown } from "lucide-react";
 import { useOnClickOutside } from "@client/hooks/useOnClickOutside";
+import { cn } from "@client/utils";
 
 interface SelectOption<T = string> {
   value: T;
   label: string;
 }
 
-interface SelectProps<T = string> {
+interface Props<T = string> {
   options: SelectOption<T>[];
   value?: T;
   onChange: (value: T) => void;
   placeholder?: string;
-  label?: string;
   id?: string;
   error?: string;
   selectedOptions?: T[];
@@ -24,39 +24,53 @@ const Select = <T = string,>({
   value,
   onChange,
   placeholder,
-  label,
   id = "select",
   error,
   selectedOptions = [],
   disabled = false,
-}: SelectProps<T>) => {
+}: Props<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const selectRef = useRef<HTMLDivElement>(null);
-  const optionsRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  useOnClickOutside(selectRef, () => {
-    setIsOpen(false);
-    setHighlightedIndex(-1);
-  });
+  const filteredOptions = useCallback(
+    () => options.filter((option) => !selectedOptions.includes(option.value)),
+    [options, selectedOptions]
+  );
 
   const selectedOption = options.find((option) => option.value === value);
-  const selectedIndex = options.findIndex((option) => option.value === value);
+  const availableOptions = filteredOptions();
+  const selectedFilteredIndex = availableOptions.findIndex(
+    (option) => option.value === value
+  );
 
-  const handleSelect = (option: SelectOption<T>) => {
-    onChange(option.value);
+  const closeDropdown = useCallback(() => {
     setIsOpen(false);
     setHighlightedIndex(-1);
-  };
+  }, []);
+
+  useOnClickOutside(selectRef, closeDropdown);
+
+  const handleSelect = useCallback(
+    (option: SelectOption<T>) => {
+      onChange(option.value);
+      closeDropdown();
+    },
+    [onChange, closeDropdown]
+  );
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLButtonElement | HTMLUListElement>) => {
+      const options = availableOptions;
+
       switch (event.key) {
         case "ArrowDown":
           event.preventDefault();
           if (!isOpen) {
             setIsOpen(true);
-            setHighlightedIndex(selectedIndex !== -1 ? selectedIndex : 0);
+            setHighlightedIndex(
+              selectedFilteredIndex !== -1 ? selectedFilteredIndex : 0
+            );
           } else {
             setHighlightedIndex((prev) =>
               prev < options.length - 1 ? prev + 1 : 0
@@ -69,7 +83,9 @@ const Select = <T = string,>({
           if (!isOpen) {
             setIsOpen(true);
             setHighlightedIndex(
-              selectedIndex !== -1 ? selectedIndex : options.length - 1
+              selectedFilteredIndex !== -1
+                ? selectedFilteredIndex
+                : options.length - 1
             );
           } else {
             setHighlightedIndex((prev) =>
@@ -85,102 +101,61 @@ const Select = <T = string,>({
             handleSelect(options[highlightedIndex]);
           } else if (!isOpen) {
             setIsOpen(true);
-            setHighlightedIndex(selectedIndex !== -1 ? selectedIndex : 0);
+            setHighlightedIndex(
+              selectedFilteredIndex !== -1 ? selectedFilteredIndex : 0
+            );
           }
           break;
 
         case "Escape":
           event.preventDefault();
-          setIsOpen(false);
-          setHighlightedIndex(-1);
+          closeDropdown();
           break;
 
         case "Tab":
           if (isOpen) {
-            setIsOpen(false);
-            setHighlightedIndex(-1);
-          }
-          break;
-
-        default:
-          // Handle first-letter navigation
-          const key = event.key.toLowerCase();
-          if (key.length === 1 && /[a-z0-9]/.test(key)) {
-            const nextIndex = options.findIndex(
-              (option, index) =>
-                index > highlightedIndex &&
-                option.label.toLowerCase().startsWith(key)
-            );
-            if (nextIndex !== -1) {
-              setHighlightedIndex(nextIndex);
-            } else {
-              // If no match found after current index, start from beginning
-              const firstIndex = options.findIndex((option) =>
-                option.label.toLowerCase().startsWith(key)
-              );
-              if (firstIndex !== -1) {
-                setHighlightedIndex(firstIndex);
-              }
-            }
+            closeDropdown();
           }
           break;
       }
     },
-    [isOpen, options, selectedIndex, highlightedIndex, handleSelect]
+    [
+      isOpen,
+      availableOptions,
+      selectedFilteredIndex,
+      highlightedIndex,
+      handleSelect,
+      closeDropdown,
+    ]
   );
-
-  // Update refs array when options change
-  const setOptionRef = (element: HTMLLIElement | null, index: number) => {
-    optionsRef.current[index] = element;
-  };
 
   return (
     <div className="relative w-full" ref={selectRef}>
-      {label && (
-        <label
-          htmlFor={id}
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
-        >
-          {label}
-        </label>
-      )}
       <button
         type="button"
         id={id}
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-labelledby={label ? `${id}-label` : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
-        className={`
-          relative w-full px-4 py-2.5 text-left bg-white dark:bg-gray-800 
-          border rounded-lg focus:outline-none focus:ring-2 
-          transition-colors duration-200
-          ${error ? "border-error focus:ring-error" : "focus:ring-primary"}
-          ${isOpen ? "border-primary ring-2 ring-primary" : ""}
-          ${
-            disabled
-              ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700"
-              : ""
-          }
-        `}
+        className={cn(
+          "relative w-full px-4 h-12 text-left bg-white border rounded-md focus:outline-none focus:ring-2 transition-colors duration-200",
+          error ? "border-error focus:ring-error" : "focus:ring-primary",
+          isOpen ? "border-primary ring-2 ring-primary" : "border-gray",
+          disabled ? "opacity-50 cursor-not-allowed bg-gray/20" : ""
+        )}
       >
-        <span
-          className={`block truncate ${
-            !selectedOption
-              ? "text-gray-500"
-              : "text-gray-900 dark:text-gray-100"
-          }`}
-        >
+        <span className="block truncate">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <ChevronDown
-            className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
-              isOpen ? "transform rotate-180" : ""
-            }`}
+            className={cn(
+              "w-5 h-5 text-gray transition-transform duration-200",
+              isOpen && "transform rotate-180"
+            )}
           />
         </span>
       </button>
@@ -188,41 +163,26 @@ const Select = <T = string,>({
       {isOpen && (
         <ul
           role="listbox"
-          aria-labelledby={label ? `${id}-label` : undefined}
           onKeyDown={handleKeyDown}
           tabIndex={-1}
-          className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto focus:outline-none"
+          className="absolute z-10 w-full mt-1 bg-white border border-gray rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
         >
-          {options.map((option, index) => {
-            const isDisabled = selectedOptions.includes(option.value);
-            return (
-              <li
-                key={`${option.label}-${index}`}
-                ref={(el) => setOptionRef(el, index)}
-                role="option"
-                aria-selected={option.value === value}
-                aria-disabled={isDisabled}
-                onClick={() => !isDisabled && handleSelect(option)}
-                className={`
-                  px-4 py-2 select-none outline-none
-                  ${
-                    isDisabled
-                      ? "cursor-not-allowed opacity-50"
-                      : "cursor-pointer"
-                  }
-                  ${
-                    index === highlightedIndex
-                      ? "bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
-                      : option.value === value
-                      ? "bg-blue-50 dark:bg-blue-800/50 text-blue-900 dark:text-blue-100"
-                      : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }
-                `}
-              >
-                {option.label}
-              </li>
-            );
-          })}
+          {availableOptions.map((option, index) => (
+            <li
+              key={`${option.label}-${index}`}
+              role="option"
+              aria-selected={option.value === value}
+              onClick={() => handleSelect(option)}
+              className={cn(
+                "px-4 py-2 select-none outline-none cursor-pointer",
+                index === highlightedIndex
+                  ? "bg-primary/10 text-primary"
+                  : "hover:bg-primary/10 hover:text-primary"
+              )}
+            >
+              {option.label}
+            </li>
+          ))}
         </ul>
       )}
     </div>
