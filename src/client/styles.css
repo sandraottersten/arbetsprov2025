@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-body: "Open Sans", "sans-serif";
+  --color-primary: #005799;
+  --color-accent: #DAECE2;
+  --color-dark: #333333;
+}
+
+html {
+  @apply font-body;
+}
+
+h1, h2, h3 {
+  @apply text-dark font-medium;
+}
+
+p, span {
+  @apply text-dark;
+}
