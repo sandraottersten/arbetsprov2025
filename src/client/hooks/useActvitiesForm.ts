@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { submitActivitiesForm } from "../api/activities";
 import {
   FormData,
   Activity,
   defaultValues,
   formValidationSchema,
 } from "../types/form";
-import { submitActivitiesForm } from "../api/activities";
+
+interface SubmissionStatus {
+  isSuccess: boolean;
+  message: string;
+}
 
 export const useActivitiesForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
+    isSuccess: false,
+    message: "",
+  });
 
   const {
     register,
@@ -38,17 +46,20 @@ export const useActivitiesForm = () => {
   const onSubmit = async (data: FormData) => {
     try {
       setIsSubmitting(true);
-      setSubmitError(null);
+      setSubmissionStatus({ isSuccess: false, message: "" });
 
       const result = await submitActivitiesForm(data);
-      console.log("Form submitted successfully:", result);
+      setSubmissionStatus({
+        isSuccess: true,
+        message: "Din anmälan har skickats in!",
+      });
       return result;
     } catch (error) {
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Ett fel uppstod vid inskickning av formuläret"
-      );
+      setSubmissionStatus({
+        isSuccess: false,
+        message:
+          "Ett fel uppstod vid inskickning av formuläret. Försök igen senare.",
+      });
       throw error;
     } finally {
       setIsSubmitting(false);
@@ -64,6 +75,6 @@ export const useActivitiesForm = () => {
     handleDeleteActivity,
     onSubmit,
     isSubmitting,
-    submitError,
+    submissionStatus,
   };
 };

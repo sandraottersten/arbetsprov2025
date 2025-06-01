@@ -14,10 +14,13 @@ html {
   @apply font-body;
 }
 
-h1, h2, legend {
-  @apply text-dark font-extrabold;
+h1 {
+  @apply text-2xl md:text-3xl lg:text-4xl font-extrabold;
+}
+legend {
+  @apply text-xl lg:text-2xl font-extrabold;
 }
 
-p, li, label, span {
+h1, h2, legend , p, li, label, span {
   @apply text-dark;
 }

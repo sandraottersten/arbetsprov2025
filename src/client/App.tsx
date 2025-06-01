@@ -5,11 +5,11 @@ import ActivitiesForm from "./forms/ActivitiesForm";
 const App = () => {
   return (
     <div className="h-screen w-screen">
-      <header className="h-20 flex items-center px-4 border-b border-gray/20 fixed top-0 left-0 right-0 z-10 bg-white">
-        <img src={logo} alt="Göteborgs Stad" className="h-12" />
+      <header className="h-16 lg:h-20 flex items-center px-4 border-b border-gray/20 fixed top-0 left-0 right-0 z-10 bg-white">
+        <img src={logo} alt="Göteborgs Stad" className="h-8 lg:h-12" />
       </header>
-      <div className="flex w-screen h-screen">
-        <div className="relative flex-1">
+      <div className="flex flex-col lg:flex-row w-full max-w-screen-2xl mx-auto h-screen overflow-y-auto lg:overflow-y-hidden">
+        <div className="relative lg:w-full lg:flex-1 h-64 lg:h-full">
           <img
             src={image}
             alt="Glada ungdomar utomhus"
@@ -17,9 +17,9 @@ const App = () => {
           />
         </div>
 
-        <div className="flex-1 p-4 md:py-32 px-12 overflow-y-auto flex flex-col">
+        <div className="lg:flex-1 px-4 py-8 lg:py-42 lg:px-12 lg:overflow-y-auto flex flex-col">
           <div className="max-w-[500px] mx-auto w-full">
-            <h1 className="text-4xl font-bold mb-6">Anmälan lägerverksamhet</h1>
+            <h1 className="mb-6">Anmälan lägerverksamhet</h1>
             <p className="mb-12 text-lg">
               Fyll i formuläret nedan för att skicka in din anmälan till
               lägerverksamheten.

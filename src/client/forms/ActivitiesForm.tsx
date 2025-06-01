@@ -9,6 +9,7 @@ import {
   Chip,
   Description,
   Error,
+  Alert,
 } from "@client/components";
 
 const ActivitiesForm = () => {
@@ -21,8 +22,17 @@ const ActivitiesForm = () => {
     handleDeleteActivity,
     onSubmit,
     isSubmitting,
-    submitError,
+    submissionStatus,
   } = useActivitiesForm();
+
+  if (submissionStatus.message) {
+    return (
+      <Alert
+        message={submissionStatus.message}
+        type={submissionStatus.isSuccess ? "success" : "error"}
+      />
+    );
+  }
 
   return (
     <form
@@ -31,13 +41,7 @@ const ActivitiesForm = () => {
       noValidate
       aria-label="Anmälningsformulär för lägerverksamhet"
     >
-      {submitError && (
-        <div role="alert" className="bg-error/10 text-error p-4 rounded-md">
-          {submitError}
-        </div>
-      )}
-
-      <fieldset className="space-y-6" disabled={isSubmitting}>
+      <fieldset className="space-y-5" disabled={isSubmitting}>
         <legend className="text-2xl font-bold">Personuppgifter</legend>
 
         <div>
@@ -71,7 +75,7 @@ const ActivitiesForm = () => {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-6 mb-4" disabled={isSubmitting}>
+      <fieldset className="space-y-5 mb-4" disabled={isSubmitting}>
         <legend className="text-2xl font-bold">Aktiviteter</legend>
         {selectedActivities.length > 0 && (
           <div className="flex flex-wrap gap-2">
