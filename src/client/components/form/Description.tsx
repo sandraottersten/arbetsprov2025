@@ -1,5 +1,5 @@
-const Description = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-sm text-muted-foreground my-2">{children}</p>;
+const Description = ({ text }: { text: string }) => {
+  return <p className="text-sm text-muted-foreground my-2">{text}</p>;
 };
 
-export { Description };
+export default Description;

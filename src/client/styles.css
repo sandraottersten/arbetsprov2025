@@ -6,6 +6,7 @@
   --color-primary: #005799;
   --color-accent: #DAECE2;
   --color-dark: #333333;
+  --color-error: #AD1E24;
 }
 
 html {
@@ -16,6 +17,6 @@ h1, h2, h3 {
   @apply text-dark font-medium;
 }
 
-p, span {
+p {
   @apply text-dark;
 }

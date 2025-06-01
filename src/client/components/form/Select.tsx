@@ -2,24 +2,24 @@ import { useRef, useState, useCallback, KeyboardEvent } from "react";
 import { ChevronDown } from "lucide-react";
 import { useOnClickOutside } from "@client/hooks/useOnClickOutside";
 
-interface SelectOption {
-  value: string;
+interface SelectOption<T = string> {
+  value: T;
   label: string;
 }
 
-interface SelectProps {
-  options: SelectOption[];
-  value?: string;
-  onChange: (value: string) => void;
+interface SelectProps<T = string> {
+  options: SelectOption<T>[];
+  value?: T;
+  onChange: (value: T) => void;
   placeholder?: string;
   label?: string;
   id?: string;
   error?: string;
-  selectedOptions?: string[];
+  selectedOptions?: T[];
   disabled?: boolean;
 }
 
-const Select = ({
+const Select = <T = string,>({
   options,
   value,
   onChange,
@@ -29,7 +29,7 @@ const Select = ({
   error,
   selectedOptions = [],
   disabled = false,
-}: SelectProps) => {
+}: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ const Select = ({
   const selectedOption = options.find((option) => option.value === value);
   const selectedIndex = options.findIndex((option) => option.value === value);
 
-  const handleSelect = (option: SelectOption) => {
+  const handleSelect = (option: SelectOption<T>) => {
     onChange(option.value);
     setIsOpen(false);
     setHighlightedIndex(-1);
@@ -156,14 +156,10 @@ const Select = ({
         onKeyDown={handleKeyDown}
         className={`
           relative w-full px-4 py-2.5 text-left bg-white dark:bg-gray-800 
-          border rounded-lg shadow-sm focus:outline-none focus:ring-2 
+          border rounded-lg focus:outline-none focus:ring-2 
           transition-colors duration-200
-          ${
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-          }
-          ${isOpen ? "ring-2 ring-blue-500" : ""}
+          ${error ? "border-error focus:ring-error" : "focus:ring-primary"}
+          ${isOpen ? "border-primary ring-2 ring-primary" : ""}
           ${
             disabled
               ? "opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700"
@@ -201,7 +197,7 @@ const Select = ({
             const isDisabled = selectedOptions.includes(option.value);
             return (
               <li
-                key={option.value}
+                key={`${option.label}-${index}`}
                 ref={(el) => setOptionRef(el, index)}
                 role="option"
                 aria-selected={option.value === value}
@@ -229,17 +225,8 @@ const Select = ({
           })}
         </ul>
       )}
-
-      {error && (
-        <p
-          id={`${id}-error`}
-          className="mt-2 text-sm text-red-600 dark:text-red-500"
-        >
-          {error}
-        </p>
-      )}
     </div>
   );
 };
 
-export { Select };
+export default Select;

@@ -3,9 +3,10 @@ import { cn } from "@client/utils";
 
 interface LabelProps extends Omit<ComponentProps<"label">, "required"> {
   required?: boolean;
+  label: string;
 }
 
-const Label = ({ className, required, ...props }: LabelProps) => {
+const Label = ({ className, required, label, ...props }: LabelProps) => {
   return (
     <label
       className={cn(
@@ -14,10 +15,10 @@ const Label = ({ className, required, ...props }: LabelProps) => {
       )}
       {...props}
     >
-      {props.children}
+      {label}
       {required && <span>*</span>}
     </label>
   );
 };
 
-export { Label };
+export default Label;

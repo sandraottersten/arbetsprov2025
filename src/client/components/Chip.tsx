@@ -1,4 +1,3 @@
-import React from "react";
 import { X } from "lucide-react";
 import { cn } from "@client/utils";
 
@@ -8,7 +7,7 @@ interface ChipProps {
   className?: string;
 }
 
-const Chip: React.FC<ChipProps> = ({ label, onDelete, className = "" }) => {
+const Chip = ({ label, onDelete, className = "" }: ChipProps) => {
   return (
     <div
       role="listitem"
