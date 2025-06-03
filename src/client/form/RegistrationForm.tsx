@@ -1,6 +1,6 @@
 import { Controller } from "react-hook-form";
-import { Activity, activities } from "@client/types/form";
-import { useRegistrationForm } from "@client/forms/useRegistrationForm";
+import { Activity, activities } from "@client/types/activities";
+import { useRegistrationForm } from "@client/form/useRegistrationForm";
 import {
   Input,
   Label,

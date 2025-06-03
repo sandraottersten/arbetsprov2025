@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { cn } from "@client/utils";
 import { UseFormRegister } from "react-hook-form";
-import { FormData } from "@client/types/form";
+import { FormData } from "@client/form/formValidation";
 
 type Props = {
   type: "text" | "email";

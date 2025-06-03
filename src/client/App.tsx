@@ -1,6 +1,6 @@
 import image from "./assets/image.jpg";
 import logo from "./assets/logo-gbg.svg";
-import RegistrationForm from "./forms/RegistrationForm";
+import RegistrationForm from "./form/RegistrationForm";
 
 const App = () => {
   return (

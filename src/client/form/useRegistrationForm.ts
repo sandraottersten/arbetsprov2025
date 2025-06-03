@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { submitRegistrationForm } from "../api/registration";
+import { submitRegistrationForm } from "@client/api/registration";
+import { Activity } from "@client/types/activities";
 import {
   FormData,
-  Activity,
-  defaultValues,
   formValidationSchema,
-} from "../types/form";
+  defaultValues,
+} from "@client/form/formValidation";
 
 interface SubmissionStatus {
   isSuccess: boolean;
@@ -43,7 +43,8 @@ export const useRegistrationForm = (): Return => {
   } = useForm<FormData>({
     defaultValues,
     resolver: yupResolver(formValidationSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
+    reValidateMode: "onBlur",
   });
 
   const selectedActivities = watch("activities");
