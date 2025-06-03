@@ -1,6 +1,6 @@
 # Arbetsprov 2025
 
-A modern web application built with React, Express, and TypeScript, featuring a responsive UI styled with Tailwind CSS.
+A web application handling a registration form, built with React, Express, and TypeScript, featuring a responsive UI styled with Tailwind CSS. 
 
 ## Technologies
 
