@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, KeyboardEvent } from "react";
+import { useRef, useState, useCallback, KeyboardEvent, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import { useOnClickOutside } from "@client/hooks/useOnClickOutside";
 import { cn } from "@client/utils";
@@ -33,15 +33,15 @@ const Select = <T = string,>({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const filteredOptions = useCallback(
+  const filteredOptions = useMemo(
     () => options.filter((option) => !selectedOptions.includes(option.value)),
     [options, selectedOptions]
   );
 
   const selectedOption = options.find((option) => option.value === value);
-  const availableOptions = filteredOptions();
+  const availableOptions = filteredOptions;
   const selectedFilteredIndex = availableOptions.findIndex(
-    (option) => option.value === value
+    (option: SelectOption<T>) => option.value === value
   );
 
   const closeDropdown = useCallback(() => {
@@ -167,7 +167,7 @@ const Select = <T = string,>({
           tabIndex={-1}
           className="absolute z-10 w-full mt-1 bg-white border border-gray rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
         >
-          {availableOptions.map((option, index) => (
+          {availableOptions.map((option: SelectOption<T>, index: number) => (
             <li
               key={`${option.label}-${index}`}
               role="option"

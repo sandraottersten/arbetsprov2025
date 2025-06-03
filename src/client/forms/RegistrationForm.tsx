@@ -1,6 +1,6 @@
 import { Controller } from "react-hook-form";
 import { Activity, activities } from "@client/types/form";
-import { useActivitiesForm } from "@client/hooks/useActvitiesForm";
+import { useRegistrationForm } from "@client/forms/useRegistrationForm";
 import {
   Input,
   Label,
@@ -12,7 +12,7 @@ import {
   Alert,
 } from "@client/components";
 
-const ActivitiesForm = () => {
+const RegistrationForm = () => {
   const {
     register,
     control,
@@ -23,7 +23,7 @@ const ActivitiesForm = () => {
     onSubmit,
     isSubmitting,
     submissionStatus,
-  } = useActivitiesForm();
+  } = useRegistrationForm();
 
   if (submissionStatus.message) {
     return (
@@ -128,4 +128,4 @@ const ActivitiesForm = () => {
   );
 };
 
-export default ActivitiesForm;
+export default RegistrationForm;

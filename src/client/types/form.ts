@@ -1,28 +1,32 @@
 import * as yup from "yup";
 
-export enum Activity {
-  ACT1 = "Paddling",
-  ACT2 = "Matlagning",
-  ACT3 = "Kampsport",
-  ACT4 = "Fotboll",
-  ACT5 = "Musik",
-  ACT6 = "Dans",
-  ACT7 = "Pyssel",
-  ACT8 = "Friidrott",
-  ACT9 = "Lekar",
+export type Activity =
+  | "paddling"
+  | "cooking"
+  | "martial_arts"
+  | "football"
+  | "music"
+  | "dance"
+  | "crafts"
+  | "athletics"
+  | "games";
+
+export interface ActivityOption {
+  value: Activity;
+  label: string;
 }
 
-export const activities = [
-  { value: Activity.ACT1, label: "Paddling" },
-  { value: Activity.ACT2, label: "Matlagning" },
-  { value: Activity.ACT3, label: "Kampsport" },
-  { value: Activity.ACT4, label: "Fotboll" },
-  { value: Activity.ACT5, label: "Musik" },
-  { value: Activity.ACT6, label: "Dans" },
-  { value: Activity.ACT7, label: "Pyssel" },
-  { value: Activity.ACT8, label: "Friidrott" },
-  { value: Activity.ACT9, label: "Lekar" },
-];
+export const activities: ActivityOption[] = [
+  { value: "paddling", label: "Paddling" },
+  { value: "cooking", label: "Matlagning" },
+  { value: "martial_arts", label: "Kampsport" },
+  { value: "football", label: "Fotboll" },
+  { value: "music", label: "Musik" },
+  { value: "dance", label: "Dans" },
+  { value: "crafts", label: "Pyssel" },
+  { value: "athletics", label: "Friidrott" },
+  { value: "games", label: "Lekar" },
+] as const;
 
 export type FormData = {
   name: string;
@@ -50,7 +54,12 @@ export const formValidationSchema = yup
       .required("Email är obligatoriskt"),
     activities: yup
       .array()
-      .of(yup.string().oneOf(Object.values(Activity)).required())
+      .of(
+        yup
+          .string()
+          .oneOf(activities.map((a) => a.value))
+          .required()
+      )
       .defined()
       .min(3, "Välj 3 aktiviteter")
       .max(3, "Välj 3 aktiviteter")

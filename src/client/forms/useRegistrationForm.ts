@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { submitActivitiesForm } from "../api/activities";
+import { submitRegistrationForm } from "../api/registration";
 import {
   FormData,
   Activity,
@@ -14,7 +14,19 @@ interface SubmissionStatus {
   message: string;
 }
 
-export const useActivitiesForm = () => {
+interface Return {
+  register: ReturnType<typeof useForm<FormData>>["register"];
+  control: ReturnType<typeof useForm<FormData>>["control"];
+  handleSubmit: ReturnType<typeof useForm<FormData>>["handleSubmit"];
+  errors: ReturnType<typeof useForm<FormData>>["formState"]["errors"];
+  selectedActivities: Activity[];
+  handleDeleteActivity: (activity: Activity) => void;
+  onSubmit: (data: FormData) => Promise<void>;
+  isSubmitting: boolean;
+  submissionStatus: SubmissionStatus;
+}
+
+export const useRegistrationForm = (): Return => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
     isSuccess: false,
@@ -31,36 +43,34 @@ export const useActivitiesForm = () => {
   } = useForm<FormData>({
     defaultValues,
     resolver: yupResolver(formValidationSchema),
-    mode: "onSubmit",
+    mode: "onBlur",
   });
 
   const selectedActivities = watch("activities");
 
   const handleDeleteActivity = (activityToDelete: Activity) => {
-    const updatedActivities = selectedActivities.filter(
-      (activity) => activity !== activityToDelete
+    setValue(
+      "activities",
+      selectedActivities.filter((activity) => activity !== activityToDelete)
     );
-    setValue("activities", updatedActivities);
   };
 
   const onSubmit = async (data: FormData) => {
+    if (isSubmitting) return;
+
     try {
       setIsSubmitting(true);
-      setSubmissionStatus({ isSuccess: false, message: "" });
-
-      const result = await submitActivitiesForm(data);
+      await submitRegistrationForm(data);
       setSubmissionStatus({
         isSuccess: true,
         message: "Din anmälan har skickats in!",
       });
-      return result;
     } catch (error) {
       setSubmissionStatus({
         isSuccess: false,
         message:
           "Ett fel uppstod vid inskickning av formuläret. Försök igen senare.",
       });
-      throw error;
     } finally {
       setIsSubmitting(false);
     }

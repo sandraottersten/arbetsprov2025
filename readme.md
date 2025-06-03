@@ -1,17 +1,60 @@
-# Arbetsprov JavaScript-utvecklare
+# Arbetsprov 2025
 
-Uppgiften består i att bygga ett formulär för anmälan till en lägerverksamhet. Formuläret ska innehålla tre fält enligt den bifogade trådskissen. Utseendet och designen bestämmer du själv.
+A modern web application built with React, Express, and TypeScript, featuring a responsive UI styled with Tailwind CSS.
 
-Formuläret ska skickas till ett backend som hanterar datan, men det behöver inte sparas (du behöver tex inte någon databas). Lösningen ska byggas med React i frontend och Node.js i backend.
+## Technologies
 
-Du får tillgång till en boilerplate att använda som grund om du vill, så du slipper lägga tid på konfiguration. Det är självklart fritt fram att inte använda den, eller att ändra i den om du vill.
+- **Frontend:**
+  - React 18
+  - TypeScript
+  - Tailwind CSS
+  - React Hook Form with Yup validation
+  - Lucide React icons
 
-Vårt utvecklingsteam kommer att granska din lösning tillsammans med ditt CV och den inledande korta intervjun för att skapa en helhetsbedömning. De kandidater som går vidare kommer att bjudas in till ett samtal där du får möjlighet att resonera och diskutera din lösning.
+- **Backend:**
+  - Express.js
+  - Node.js
+  - TypeScript
+  - CORS enabled
 
-Lägg upp din kod i ett Git-repository (t.ex. github) och maila en länk till oss senast onsdag den 4 juni.
+## Prerequisites
 
-Har du frågor om uppgiften? Tveka inte att höra av dig via e-post.
+- Node.js (v20.0.0 or higher recommended)
+- npm or yarn package manager
 
-Boilerplate-repo: https://github.com/FilipIntraservice/arbetsprov2025
+## Setup
 
-Kontakt: filip.anic@intraservice.goteborg.se
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd arbetsprov2025
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Running the Application
+
+The application consists of both a client and server component. You'll need to run both to use the application fully.
+
+### Start the Client (Vite Development Server)
+```bash
+npm run start:client
+```
+This will start the development server, typically at `http://localhost:5173`
+
+### Start the Server
+```bash
+npm run start:server
+```
+This will start the Express server with hot-reload enabled through nodemon.
+
+## Development Notes
+
+- The project uses TypeScript for type safety
+- Tailwind CSS is configured for styling
+- Form validation is handled through React Hook Form with Yup schemas
+- The server is set up with CORS enabled for development
+

@@ -1,6 +1,6 @@
 interface Props {
   message: string;
-  id?: string;
+  id: string;
 }
 
 const Error = ({ message, id }: Props) => {

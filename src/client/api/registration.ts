@@ -7,10 +7,10 @@ interface ApiResponse {
   message: string;
 }
 
-export const submitActivitiesForm = async (
+export const submitRegistrationForm = async (
   data: FormData
 ): Promise<ApiResponse> => {
-  const response = await fetch(`${API_BASE_URL}/submit-form`, {
+  const response = await fetch(`${API_BASE_URL}/registration`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

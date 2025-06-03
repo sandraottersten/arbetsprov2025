@@ -14,10 +14,10 @@ app.use(
 
 app.use(express.json());
 
-app.post("/api/submit-form", (req, res) => {
+app.post("/api/registration", (req, res) => {
   try {
     const formData = req.body;
-    // TODO: Add validation and database storage
+    // TODO: Add database storage
 
     res.status(200).json({
       success: true,
