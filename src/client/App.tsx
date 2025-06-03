@@ -18,7 +18,7 @@ const App = () => {
           />
         </div>
 
-        <div className="lg:flex-1 px-4 py-8 lg:py-38 lg:px-12 lg:overflow-y-auto flex flex-col">
+        <div className="lg:flex-1 px-4 py-8 lg:pt-38 lg:px-12 lg:overflow-y-auto flex flex-col">
           <div className="max-w-[500px] w-full">
             <h1 className="mb-6">Anmälan lägerverksamhet</h1>
             <p className="mb-12 text-lg">

@@ -12,7 +12,7 @@ const Chip = ({ label, onDelete, className }: Props) => {
     <div
       role="listitem"
       className={cn(
-        "inline-flex items-center gap-2 px-3 py-1.5 bg-accent rounded-md text-sm group",
+        "inline-flex items-center gap-2 pl-3 bg-accent rounded-md text-sm group",
         className
       )}
     >
@@ -22,8 +22,9 @@ const Chip = ({ label, onDelete, className }: Props) => {
           onClick={onDelete}
           type="button"
           className={cn(
-            "flex items-center justify-center cursor-pointer w-5 h-5 rounded-full hover:bg-gray-200",
-            "focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary transition-colors"
+            "flex items-center justify-center cursor-pointer w-8 h-8 rounded-r-md",
+            "focus:outline-none focus:ring-2 focus:ring-primary transition-colors",
+            "group-hover:bg-primary/20"
           )}
           aria-label={`Ta bort ${label}`}
         >

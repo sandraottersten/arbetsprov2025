@@ -143,7 +143,9 @@ const Select = <T = string,>({
         className={cn(
           "relative w-full px-4 h-12 text-left bg-white border rounded-md focus:outline-none focus:ring-2 transition-colors duration-200",
           error ? "border-error focus:ring-error" : "focus:ring-primary",
-          isOpen ? "border-primary ring-2 ring-primary" : "border-gray",
+          isOpen
+            ? "border-primary ring-2 ring-primary"
+            : "border-gray focus:border-primary",
           disabled ? "opacity-50 cursor-not-allowed bg-gray/20" : ""
         )}
       >
