@@ -1,4 +1,4 @@
-import { FormData } from "../types/activities";
+import { FormData } from "@client/form/formValidation";
 
 const API_BASE_URL = "http://localhost:3001/api";
 
